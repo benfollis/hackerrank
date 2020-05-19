@@ -1,0 +1,16 @@
+#!/bin/ruby
+
+require 'json'
+require 'stringio'
+
+# Complete the camelcase function below.
+def camelcase(s)
+
+
+end
+
+s = gets.to_s.rstrip
+
+result = camelcase s
+
+puts result
