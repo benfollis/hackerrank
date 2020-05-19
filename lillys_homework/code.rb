@@ -33,18 +33,17 @@ def count_swaps(source, dest)
 #  puts source.inspect
 #  puts dest.inspect
   source_positions = build_position_index(source)
-  puts source_positions.inspect
+#  puts source_positions.inspect
   dest_positions = build_position_index(dest)
-  puts dest_positions.inspect
+#  puts dest_positions.inspect
   scratchpad = source.clone
   swaps = 0;
   current_position = 0
   while (current_position < source.size - 1) do
 #    puts scratchpad.inspect
-    iters += 1
     current_num = scratchpad[current_position]
     current_dest_num = dest[current_position]
-    puts "Position #{current_position} Current: #{current_num} Dest #{current_dest_num}"
+#    puts "Position #{current_position} Current: #{current_num} Dest #{current_dest_num}"
     if (current_num != current_dest_num) then
       correct_position = dest_positions[current_num]
       current_occupier = scratchpad[correct_position]
