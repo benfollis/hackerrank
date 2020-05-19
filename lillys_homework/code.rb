@@ -17,47 +17,61 @@ def index_of_min(array)
 end
 
 
-def lilysHomeworkAscending(arr)
-  if(arr.size == 1) then
-    return 0
+def build_position_index(data)
+  index = {}
+  data.each_with_index do |item, position|
+    index[item] = position
   end
-  i = index_of_max(arr)
-  last_index = arr.size-1
-  swaps = 0
-  if i != last_index then
-    swaps +=1
-    # do the swap
-    temp = arr[i]
-    arr[i] = arr[last_index]
+  return index
+end
+                              
+# not this will fail with duplicated elements
+# but the problem says distinct is fine
+# to make work with distinct, we'd need to maintain a list of elements
+# in the positions array, and shrink it as we consume them
+def count_swaps(source, dest)
+#  puts source.inspect
+#  puts dest.inspect
+  source_positions = build_position_index(source)
+  puts source_positions.inspect
+  dest_positions = build_position_index(dest)
+  puts dest_positions.inspect
+  scratchpad = source.clone
+  swaps = 0;
+  current_position = 0
+  while (current_position < source.size - 1) do
+#    puts scratchpad.inspect
+    iters += 1
+    current_num = scratchpad[current_position]
+    current_dest_num = dest[current_position]
+    puts "Position #{current_position} Current: #{current_num} Dest #{current_dest_num}"
+    if (current_num != current_dest_num) then
+      correct_position = dest_positions[current_num]
+      current_occupier = scratchpad[correct_position]
+#      puts "Found #{current_occupier} where #{current_num} should be"
+#      puts "Should swap item at #{current_position} with item at #{correct_position}"
+      # record the swap
+      swaps += 1
+      scratchpad[current_position] = current_occupier # do the swap
+      scratchpad[correct_position] = current_num
+      # update our position index
+      # don't need to update dests, because it's never changing
+      source_positions[current_num] = correct_position
+    else
+      current_position += 1
+    end
   end
-    # compute on the sub problem if a[0... i-1]
-  swaps += lilysHomeworkAscending(arr[0, last_index])
   return swaps
 end
 
-
-def lilysHomeworkDescending(arr)
-  if(arr.size == 1) then
-    return 0
-  end
-  i = index_of_min(arr)
-  swaps = 0
-  if i != 0 then
-    swaps +=1
-    # do the swap
-    temp = arr[i]
-    arr[i] = arr[0]
-  end
-  # compute on the sub problem if a[1... i]
-  swaps += lilysHomeworkAscending(arr[1, arr.size-1])
-  return swaps
-end
 
 # Complete the lilysHomework function below.
-def lilysHomework(arr)
-  ascending = lilysHomeworkAscending(arr)
-  descending = lilysHomeworkDescending(arr)
-  return [ascending, descending].min
+def lilysHomework(source)
+  ascending = source.sort
+  descending = ascending.reverse
+  ascending_swaps = count_swaps(source, ascending)
+  descending_swaps = count_swaps(source, descending)
+  return [ascending_swaps, descending_swaps].min
 end
 
 n = gets.to_i
