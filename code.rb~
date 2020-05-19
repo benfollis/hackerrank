@@ -1,0 +1,3 @@
+#general idea here is to just pick any two letters and
+#remove all the rest, then check to see if it's a valid
+#string. If so record the length, and return the max such length
