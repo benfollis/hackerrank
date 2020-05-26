@@ -17,11 +17,13 @@ require 'stringio'
 #Sn = S(n-c1) + S(n-c2).... + S(n-ck)
 #Sn = 0 when n < the minimum unit in C
 
-
-def get_ways_memoized(n, c, memo)
-  puts "N:#{n}, C:#{c.inspect}, M#{memo.inspect}"
+# this doesn't work, becasue I need to store the coin decomposition
+# because the problem views (2,1) as the same as (1,2)
+def get_ways_memoized(n, c, memo, coins)
+  if (n < 0) then
+    return 0
+  end
   min_c = c.min
-  puts "Found #{min_c} as the smallest c"
   if (min_c == n) then
     memo[n] = 1
     return 1
@@ -33,17 +35,19 @@ def get_ways_memoized(n, c, memo)
   if !memo[n].nil?
     return memo[n]
   end
-  possible_cs = c.select{ |coin| coin <= n}
-  puts "Possible Cs #{possible_cs.inspect}"
-  # we increment by one because we
   possible_ways = 0
-  possible_cs.each do |coin|
+  c.each do |coin|
+    if (coin == n) then
+      possible_w# ays += 1
+      next
+    end
     puts "Processing n: #{n} and coin: #{coin}"
     sub_ways = get_ways_memoized(n-coin, c, memo)
-    if (sub_ways >=1)
-      possible_ways+=sub_ways
-    end
+    possible_ways += sub_ways
   end
+  # if c == n then the above won't count c itself because it will try to recursively figure out n=c = 0. which is 0
+
+
   puts "Found #{possible_ways} ways to make change for #{n}"
   memo[n] = possible_ways
   return memo[n]
